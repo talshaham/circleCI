@@ -9,12 +9,11 @@ jobs:
       - run:
           name: Install Python requirements
           command: |
-            pip install -r circleCI/requirements.txt
+            pip install -r requirements.txt
       - run: python --version
       - run:
           name: Start Docker Compose
           command: |
-            cd circleCI
             docker-compose up -d
 
 workflows:
