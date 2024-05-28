@@ -18,11 +18,14 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+          docker_layer_caching: true
       - run:
           name: build docker image
-          command: docker-compose up -d
+          command: docker-compose up --build -d
+      # - run:
+      #     name: test image
+      #     command: python
 
-  
 
 workflows:
   my-workflow:
