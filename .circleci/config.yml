@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  install_requirements:
     docker:
       - image: cimg/python:3.12.3
     steps:
@@ -12,7 +12,8 @@ jobs:
           command: |
             pip install -r requirements.txt    
 
-
+  docker_build:
+    docker:
       - image: cimg/base:2022.06
     steps:
       - checkout
