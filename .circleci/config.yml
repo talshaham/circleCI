@@ -6,7 +6,19 @@ jobs:
       - image: cimg/python:3.12.3
     steps:
       - checkout
+      - run:
+          name: Clone repository
+          command: git clone git@github.com:talshaham/circleCI.git
+      - run:
+          name: Install Python requirements
+          command: |
+            pip install -r circleCI/requirements.txt
       - run: python --version
+      - run:
+          name: Start Docker Compose
+          command: |
+            cd circleCI
+            docker-compose up -d
 
 workflows:
   my-workflow:
