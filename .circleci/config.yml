@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build:
-    python:
+    docker:
       - image: cimg/python:3.12.3
     steps:
       - checkout
@@ -13,7 +13,6 @@ jobs:
             pip install -r requirements.txt    
 
 
-    docker-compose:
       - image: cimg/base:2022.06
     steps:
       - checkout
