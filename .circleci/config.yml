@@ -20,7 +20,7 @@ jobs:
       - image: cimg/base:2022.06
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: build docker image
