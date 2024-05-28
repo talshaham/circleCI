@@ -7,9 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Clone repository
-          command: git clone git@github.com:talshaham/circleCI.git
-      - run:
           name: Install Python requirements
           command: |
             pip install -r circleCI/requirements.txt
