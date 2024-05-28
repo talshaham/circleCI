@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  discord: antonioned/discord@0.1.0
+
 jobs:
   install_requirements:
     docker:
@@ -22,9 +25,13 @@ jobs:
       - run:
           name: build docker image
           command: docker-compose up --build -d
-      # - run:
-      #     name: test image
-      #     command: python
+
+      - discord/status:
+          fail_only: false
+          failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
+          success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
+          webhook: "${DISCORD_STATUS_WEBHOOK}"
+
 
 
 workflows:
