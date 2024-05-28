@@ -27,4 +27,5 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - build
+      - install_requirements
+      - docker_build
