@@ -1,0 +1,59 @@
+version: 2.1
+
+orbs:
+  discord: antonioned/discord@0.1.0
+  bridgecrew: bridgecrew/bridgecrew@1.0.5
+
+jobs:
+  install_requirements:
+    docker:
+      - image: cimg/python:3.12.3
+    steps:
+      - checkout
+      - run: python --version
+      - run:
+          name: Install Python requirements
+          command: |
+            pip install -r requirements.txt    
+
+  docker_build:
+    docker:
+      - image: cimg/base:2024.05
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: build docker image
+          command: docker-compose up --build -d
+
+      # - discord/status:
+      #     fail_only: false
+      #     failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
+      #     success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
+      #     webhook: "${DISCORD_STATUS_WEBHOOK}"
+
+      - run:
+          name: upload image to docker registery
+          command: |
+            echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345 --password-stdin
+            docker build -t registry.gitlab.com/git5911207/git_lab1 .
+            docker push registry.gitlab.com/git5911207/git_lab1
+
+  checkov_tests:
+    executor: bridgecrew/default
+    steps:
+      - checkout
+      - bridgecrew/scan:
+          api-key-variable: BC_API_KEY
+          directory: ./terraform_files
+          output: json
+          soft-fail: true
+
+workflows:
+  my-workflow:
+    jobs:
+      - install_requirements
+      - docker_build
+      - checkov_tests
+      ##
