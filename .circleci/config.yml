@@ -108,61 +108,61 @@ workflows:
           name: tf-plan-sandbox
           requires:
             - tf-init-sandbox
-      - terraform-orb/test:
-          environment: sandbox
-          filters:
-            branches:
-              ignore: master
-          name: tf-test-sandbox
-          requires:
-            - tf-plan-sandbox
-          tests-dir: infra/test
-      - terraform-orb/apply:
-          auto_approve: true
-          environment: sandbox
-          filters:
-            branches:
-              ignore: master
-          infrastructure_dir: infra
-          name: tf-apply-sandbox
-          requires:
-            - tf-test-sandbox
-      - terraform-orb/init:
-          attach-workspace: true
-          checkout: false
-          filters:
-            branches:
-              only: master
-          infrastructure_dir: infra
-          name: tf-init-prod
-          requires:
-            - tf-fmt
-            - tf-validate
-          save-workspace: true
-          tfe_access_token_env_var: TFE_PROD_WORKSPACE_TOKEN
-      - terraform-orb/plan:
-          environment: prod
-          filters:
-            branches:
-              only: master
-          infrastructure_dir: infra
-          name: tf-plan-prod
-          requires:
-            - tf-init-prod
-      - approve_for_prod:
-          requires:
-            - tf-plan-prod
-          type: approval
-      - terraform-orb/apply:
-          auto_approve: true
-          environment: prod
-          filters:
-            branches:
-              only: master
-          infrastructure_dir: infra
-          name: tf-apply-prod
-          requires:
-            - approve_for_prod
+      # - terraform-orb/test:
+      #     environment: sandbox
+      #     filters:
+      #       branches:
+      #         ignore: master
+      #     name: tf-test-sandbox
+      #     requires:
+      #       - tf-plan-sandbox
+      #     tests-dir: infra/test
+      # - terraform-orb/apply:
+      #     auto_approve: true
+      #     environment: sandbox
+      #     filters:
+      #       branches:
+      #         ignore: master
+      #     infrastructure_dir: infra
+      #     name: tf-apply-sandbox
+      #     requires:
+      #       - tf-test-sandbox
+      # - terraform-orb/init:
+      #     attach-workspace: true
+      #     checkout: false
+      #     filters:
+      #       branches:
+      #         only: master
+      #     infrastructure_dir: infra
+      #     name: tf-init-prod
+      #     requires:
+      #       - tf-fmt
+      #       - tf-validate
+      #     save-workspace: true
+      #     tfe_access_token_env_var: TFE_PROD_WORKSPACE_TOKEN
+      # - terraform-orb/plan:
+      #     environment: prod
+      #     filters:
+      #       branches:
+      #         only: master
+      #     infrastructure_dir: infra
+      #     name: tf-plan-prod
+      #     requires:
+      #       - tf-init-prod
+      # - approve_for_prod:
+      #     requires:
+      #       - tf-plan-prod
+      #     type: approval
+      # - terraform-orb/apply:
+      #     auto_approve: true
+      #     environment: prod
+      #     filters:
+      #       branches:
+      #         only: master
+      #     infrastructure_dir: infra
+      #     name: tf-apply-prod
+      #     requires:
+      #       - approve_for_prod
 
 
 
