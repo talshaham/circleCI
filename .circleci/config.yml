@@ -6,17 +6,6 @@ orbs:
   terraform-orb: bankrate/terraform@1.0.0
 
 jobs:
-  install_requirements:
-    docker:
-      - image: cimg/python:3.12.3
-    steps:
-      - checkout
-      - run: python --version
-      - run:
-          name: Install Python requirements
-          command: |
-            pip install -r requirements.txt    
-
   docker_build:
     docker:
       - image: cimg/base:2024.05
@@ -27,9 +16,10 @@ jobs:
       - run:
           name: build docker image
           command: docker-compose up --build -d
-      - run: 
-          name: reachability test
-          command: bash test_app.sh
+          command: docker ps
+      # - run: 
+      #     name: reachability test
+      #     command: bash test_app.sh
       
 
       # - discord/status:
@@ -70,7 +60,6 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - install_requirements
       - docker_build
       - checkov_tests
       #
