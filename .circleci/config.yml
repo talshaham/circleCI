@@ -27,6 +27,10 @@ jobs:
       - run:
           name: build docker image
           command: docker-compose up --build -d
+      - run: 
+          name: reachability test
+          command: python test_app.py
+      
 
       # - discord/status:
       #     fail_only: false
@@ -52,62 +56,69 @@ jobs:
           soft-fail: true
 
 
-  fetch-code:
-    executor: terraform-orb/terraform
-    steps:
-      - checkout
-      - persist_to_workspace:
-          paths:
-            - .
-          root: .
+
+  # fetch-code:
+  #   executor: terraform-orb/terraform
+  #   steps:
+  #     - checkout
+  #     - persist_to_workspace:
+  #         paths:
+  #           - .
+  #         root: .
 
        
-
-
-
 workflows:
-  pipeline:
+  my-workflow:
     jobs:
       - install_requirements
       - docker_build
       - checkov_tests
-      - fetch-code
-      - terraform-orb/fmt:
-          attach-workspace: true
-          checkout: false
-          infrastructure_dir: infra
-          name: tf-fmt
-          requires:
-            - fetch-code
-      - terraform-orb/validate:
-          attach-workspace: true
-          checkout: false
-          infrastructure_dir: infra
-          name: tf-validate
-          requires:
-            - fetch-code
-      - terraform-orb/init:
-          attach-workspace: true
-          checkout: false
-          filters:
-            branches:
-              ignore: master
-          infrastructure_dir: infra
-          name: tf-init-sandbox
-          requires:
-            - tf-fmt
-            - tf-validate
-          save-workspace: true
-          tfe_access_token_env_var: TFE_SANDBOX_WORKSPACE_TOKEN
-      - terraform-orb/plan:
-          environment: sandbox
-          filters:
-            branches:
-              ignore: master
-          infrastructure_dir: infra
-          name: tf-plan-sandbox
-          requires:
-            - tf-init-sandbox
+      #
+
+
+# workflows:
+#   pipeline:
+#     jobs:
+#       - install_requirements
+#       - docker_build
+#       - checkov_tests
+#       - fetch-code
+#       - terraform-orb/fmt:
+#           attach-workspace: true
+#           checkout: false
+#           infrastructure_dir: infra
+#           name: tf-fmt
+#           requires:
+#             - fetch-code
+#       - terraform-orb/validate:
+#           attach-workspace: true
+#           checkout: false
+#           infrastructure_dir: infra
+#           name: tf-validate
+#           requires:
+#             - fetch-code
+#       - terraform-orb/init:
+#           attach-workspace: true
+#           checkout: false
+#           filters:
+#             branches:
+#               ignore: master
+#           infrastructure_dir: infra
+#           name: tf-init-sandbox
+#           requires:
+#             - tf-fmt
+#             - tf-validate
+#           save-workspace: true
+#           tfe_access_token_env_var: TFE_SANDBOX_WORKSPACE_TOKEN
+#       - terraform-orb/plan:
+#           environment: sandbox
+#           filters:
+#             branches:
+#               ignore: master
+#           infrastructure_dir: infra
+#           name: tf-plan-sandbox
+#           requires:
+#             - tf-init-sandbox
       # - terraform-orb/test:
       #     environment: sandbox
       #     filters:
@@ -167,10 +178,4 @@ workflows:
 
 
 
-# workflows:
-#   my-workflow:
-#     jobs:
-#       - install_requirements
-#       - docker_build
-#       - checkov_tests
-      ##
+
