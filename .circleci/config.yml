@@ -19,11 +19,7 @@ jobs:
       #     failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
       #     success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
       #     webhook: "${DISCORD_STATUS_WEBHOOK}"
-      - run:
-          name: Reachability Test
-          command: |
-            docker run -d -p 5000:5000 --name app $DOCKERHUB_USERNAME/weathertest:$CIRCLE_BUILD_NUM
-            docker exec app python test.py
+
             
       - run:
           name: upload image to docker registery
@@ -31,7 +27,11 @@ jobs:
             echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345 --password-stdin
             docker build -t registry.gitlab.com/git5911207/git_lab1:$CIRCLE_BUILD_NUM .
             docker push registry.gitlab.com/git5911207/git_lab1:$CIRCLE_BUILD_NUM
-
+      - run:
+          name: Reachability Test
+          command: |
+            docker run -d -p 5000:5000 --name app registry.gitlab.com/git5911207/git_lab1:$CIRCLE_BUILD_NUM
+            docker exec app python test.py
   checkov_tests:
     executor: bridgecrew/default
     steps:
