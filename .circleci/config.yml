@@ -26,16 +26,16 @@ jobs:
           name: build docker image
           command: docker-compose up --build -d
 
-      - discord/status:
-          fail_only: false
-          failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
-          success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
-          webhook: "${DISCORD_STATUS_WEBHOOK}"
+      # - discord/status:
+      #     fail_only: false
+      #     failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
+      #     success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
+      #     webhook: "${DISCORD_STATUS_WEBHOOK}"
 
       - run:
           name: upload image to docker registery
-          command: echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com/git5911207/git_lab1 -u talso12345@gmail.com --password-stdin
-
+          command: |
+            echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com/git5911207/git_lab1 -u talso12345@gmail.com --password-stdin
 
 
 workflows:
