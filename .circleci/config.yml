@@ -22,8 +22,7 @@ jobs:
       - run:
           name: Reachability Test
           command: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker run -d -p5000:5000 --name app $DOCKERHUB_USERNAME/weathertest:$TAG
+            docker run -d -p5000:5000 --name app $DOCKERHUB_USERNAME/weathertest:$CIRCLE_BUILD_NUM
             docker exec app python test.py
             
       - run:
