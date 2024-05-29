@@ -60,7 +60,13 @@ jobs:
           paths:
             - .
           root: .
-
+      - terraform-orb/fmt:
+          attach-workspace: true
+          checkout: false
+          infrastructure_dir: infra
+          name: tf-fmt
+          requires:
+            - fetch-code
        
 
 
