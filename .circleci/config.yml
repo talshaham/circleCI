@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   discord: antonioned/discord@0.1.0
-  bridgecrew: bridgecrew/bridgecrew@x.y.z
+  bridgecrew: bridgecrew/bridgecrew@3.2.109
 
 jobs:
   install_requirements:
