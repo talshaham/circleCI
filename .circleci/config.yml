@@ -20,9 +20,6 @@ jobs:
           name: list containers
           command: docker ps
 
-      - run:
-          name: docker tag
-          command: docker tag project-app 
       
       # - run: 
       #     name: reachability test
