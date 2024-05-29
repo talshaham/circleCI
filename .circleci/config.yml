@@ -16,7 +16,9 @@ jobs:
       - run:
           name: build docker image
           command: docker-compose up --build -d
-                   docker ps
+      - run:
+          name: list containers
+          command: docker ps
       # - run: 
       #     name: reachability test
       #     command: bash test_app.sh
