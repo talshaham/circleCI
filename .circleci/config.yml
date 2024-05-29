@@ -60,15 +60,7 @@ jobs:
           paths:
             - .
           root: .
-  terraform-orb/fmt:
-    executor: terraform-orb/terraform
-    steps:
-        attach-workspace: true
-        checkout: false
-        infrastructure_dir: infra
-        name: tf-fmt
-        requires:
-          - fetch-code
+
        
 
 
@@ -81,12 +73,12 @@ workflows:
       - checkov_tests
       - fetch-code
       - terraform-orb/fmt:
-      #     attach-workspace: true
-      #     checkout: false
-      #     infrastructure_dir: infra
-      #     name: tf-fmt
-      #     requires:
-      #       - fetch-code
+          attach-workspace: true
+          checkout: false
+          infrastructure_dir: infra
+          name: tf-fmt
+          requires:
+            - fetch-code
       # - terraform-orb/validate:
       #     attach-workspace: true
       #     checkout: false
