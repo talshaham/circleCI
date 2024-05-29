@@ -34,7 +34,8 @@ jobs:
 
       - run:
           name: upload image to docker registery
-          command: echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+          command: echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com/git5911207/git_lab1 -u talso12345@gmail.com --password-stdin
+
 
 
 workflows:
