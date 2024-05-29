@@ -35,7 +35,7 @@ jobs:
       - run:
           name: upload image to docker registery
           command: |
-            echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345@gmail.com --password-stdin
+            echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345 --password-stdin
             docker build -t registry.gitlab.com/git5911207/git_lab1 .
             docker push registry.gitlab.com/git5911207/git_lab1
 
