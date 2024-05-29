@@ -6,44 +6,32 @@ orbs:
   terraform-orb: bankrate/terraform@1.0.0
 
 jobs:
-  install_requirements:
-    docker:
-      - image: cimg/python:3.12.3
-    steps:
-      - checkout
-      - run: python --version
-      - run:
-          name: Install Python requirements
-          command: |
-            pip install -r requirements.txt    
-
   docker_build:
     docker:
       - image: cimg/base:2024.05
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: build docker image
-          command: docker-compose up --build -d
-      - run: 
-          name: reachability test
-          command: bash test_app.py
-      
+          docker_layer_caching: true      
 
       # - discord/status:
       #     fail_only: false
       #     failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
       #     success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
       #     webhook: "${DISCORD_STATUS_WEBHOOK}"
-
+      - run:
+          name: Reachability Test
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker run -d -p5000:5000 --name app $DOCKERHUB_USERNAME/weathertest:$TAG
+            docker exec app python test.py
+            
       - run:
           name: upload image to docker registery
           command: |
             echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345 --password-stdin
-            docker build -t registry.gitlab.com/git5911207/git_lab1 .
-            docker push registry.gitlab.com/git5911207/git_lab1
+            docker build -t registry.gitlab.com/git5911207/git_lab1:$CIRCLE_BUILD_NUM .
+            docker push registry.gitlab.com/git5911207/git_lab1:$CIRCLE_BUILD_NUM
 
   checkov_tests:
     executor: bridgecrew/default
@@ -70,7 +58,6 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - install_requirements
       - docker_build
       - checkov_tests
       #
