@@ -19,6 +19,11 @@ jobs:
       - run:
           name: list containers
           command: docker ps
+
+      - run:
+          name: docker tag
+          command: docker tag project-app 
+      
       # - run: 
       #     name: reachability test
       #     command: bash test_app.sh
@@ -32,10 +37,11 @@ jobs:
 
       - run:
           name: upload image to docker registery
+          TAG=0.1.$CIRCLE_BUILD_NUM
           command: |
             echo "$TOKEN_GITLAB_REGISTERY" | docker login registry.gitlab.com -u talso12345 --password-stdin
-            docker build -t registry.gitlab.com/git5911207/git_lab1 .
-            docker push registry.gitlab.com/git5911207/git_lab1
+            docker build -t registry.gitlab.com/git5911207/git_lab1$TAG .
+            docker push registry.gitlab.com/git5911207/git_lab1$TAG
 
   checkov_tests:
     executor: bridgecrew/default
