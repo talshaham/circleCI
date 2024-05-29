@@ -32,6 +32,9 @@ jobs:
           success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
           webhook: "${DISCORD_STATUS_WEBHOOK}"
 
+      - run:
+          name: upload image to docker registery
+          command: echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
 
 
 workflows:
