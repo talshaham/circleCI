@@ -12,26 +12,20 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: build docker image
-          command: docker-compose up --build -d
-      - run:
-          name: list containers
-          command: docker ps
-
-      
-      # - run: 
-      #     name: reachability test
-      #     command: bash test_app.sh
-      
+          docker_layer_caching: true      
 
       # - discord/status:
       #     fail_only: false
       #     failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
       #     success_message: "**${CIRCLE_USERNAME}** deployed api to prod."
       #     webhook: "${DISCORD_STATUS_WEBHOOK}"
-
+      - run:
+          name: Reachability Test
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker run -d -p5000:5000 --name app $DOCKERHUB_USERNAME/weathertest:$TAG
+            docker exec app python test.py
+            
       - run:
           name: upload image to docker registery
           command: |
