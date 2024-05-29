@@ -27,13 +27,9 @@ jobs:
       - run:
           name: build docker image
           command: docker-compose up --build -d
-      - run:
-          name: Install Python requirements
-          command: |
-            pip install -r requirements.txt 
       - run: 
           name: reachability test
-          command: python test_app.py
+          command: bash test_app.py
       
 
       # - discord/status:
