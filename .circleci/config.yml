@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   discord: antonioned/discord@0.1.0
+  bridgecrew: bridgecrew/bridgecrew@x.y.z
 
 jobs:
   install_requirements:
@@ -39,10 +40,20 @@ jobs:
             docker build -t registry.gitlab.com/git5911207/git_lab1 .
             docker push registry.gitlab.com/git5911207/git_lab1
 
+  checkov_tests:
+    executor: bridgecrew/default
+    steps:
+      - checkout
+      - bridgecrew/scan:
+          api-key-variable: BC_API_KEY
+          directory: ./terraform
+          output: json
+          soft-fail: true
 
 workflows:
   my-workflow:
     jobs:
       - install_requirements
       - docker_build
+      - checkov_tests
       ##
