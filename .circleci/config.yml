@@ -80,7 +80,7 @@ workflows:
       - docker_build
       - checkov_tests
       - fetch-code
-      # - terraform-orb/fmt:
+      - terraform-orb/fmt:
       #     attach-workspace: true
       #     checkout: false
       #     infrastructure_dir: infra
